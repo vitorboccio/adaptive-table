@@ -1,6 +1,6 @@
 {
   "name": "adaptive-table",
-  "version": "3.2.0",
+  "version": "3.2.1",
   "description": "A reusable and customizable table component for React, written in TypeScript by @vitorboccio",
   "main": "dist/index.js",
   "module": "dist/index.esm.js",
