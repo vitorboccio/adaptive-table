@@ -60,9 +60,13 @@ An array of column definitions. Each column should have the following properties
 
 Whether to display a checkbox column for row selection. Default is `false`.
 
-### `itemsPerPage?: number`
+### `pageSize?: number`
 
 The number of items to display per page. Default is `10`.
+
+### `pageSizeOptions?: number[]`
+
+The page size options displayed on the table footer
 
 ### `onSorting?: (sortingData: SortingState<T>) => void`
 
