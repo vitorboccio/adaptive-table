@@ -1,7 +1,8 @@
 import { useState, useCallback, useEffect } from "react";
-import { Column } from "../types";
+import { type Column } from "../types";
 
 export const useColumnResize = (
+  // eslint-disable-next-line @typescript-eslint/no-explicit-any
   columns: Column<any>[],
   tableWidth: number,
   hasCheckbox: boolean,
@@ -27,29 +28,36 @@ export const useColumnResize = (
         const newWidths = [...prevWidths];
         const actualIndex = hasCheckbox ? index - 1 : index;
         const oldWidth = newWidths[index];
-        const widthChange = newWidth - oldWidth;
 
         if (index === 0 && hasCheckbox) return prevWidths;
 
-        newWidths[index] = Math.max(
-          newWidth,
-          columns[actualIndex]?.minWidth || 50
-        );
+        const minWidth = columns[actualIndex]?.minWidth || 50;
 
-        let nextColumnIndex = index + 1;
-        while (
-          nextColumnIndex < newWidths.length &&
-          newWidths[nextColumnIndex] - widthChange <
-            (columns[nextColumnIndex - (hasCheckbox ? 2 : 1)]?.minWidth || 50)
-        ) {
-          nextColumnIndex++;
-        }
+        const clampedNewWidth = Math.max(newWidth, minWidth);
+        const actualWidthChange = clampedNewWidth - oldWidth;
+
+        if (actualWidthChange === 0) return prevWidths;
+
+        newWidths[index] = clampedNewWidth;
+
+        const nextColumnIndex = index + 1;
 
         if (nextColumnIndex < newWidths.length) {
-          newWidths[nextColumnIndex] = Math.max(
-            newWidths[nextColumnIndex] - widthChange,
-            columns[nextColumnIndex - (hasCheckbox ? 2 : 1)]?.minWidth || 50
-          );
+          const nextActualIndex = hasCheckbox
+            ? nextColumnIndex - 1
+            : nextColumnIndex;
+          const nextMinWidth = columns[nextActualIndex]?.minWidth || 50;
+          const nextNewWidth = newWidths[nextColumnIndex] - actualWidthChange;
+
+          if (nextNewWidth >= nextMinWidth) {
+            newWidths[nextColumnIndex] = nextNewWidth;
+          } else {
+            return prevWidths;
+          }
+        } else {
+          if (actualWidthChange > 0) {
+            return prevWidths;
+          }
         }
 
         onResize?.(newWidths);
