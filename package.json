@@ -1,6 +1,6 @@
 {
   "name": "adaptive-table",
-  "version": "3.2.1",
+  "version": "3.2.2",
   "description": "A reusable and customizable table component for React, written in TypeScript by @vitorboccio",
   "main": "dist/index.js",
   "module": "dist/index.esm.js",
@@ -32,7 +32,7 @@
   },
   "repository": {
     "type": "git",
-    "url": "https://github.com/vitorpdasilva/adaptive-table"
+    "url": "https://github.com/vitorboccio/adaptive-table"
   },
   "exports": {
     ".": {
